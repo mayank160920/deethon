@@ -20,7 +20,7 @@ def test_session():
 def test_download():
     """Test if the download method returns a Path object."""
     deezer = deethon.Session(
-        '25e67e8e8100407765315a67e0d132fb88a436ffe244813b62ce7086c2efe01b3152041e4308dae45b14f22161adf525ede64cfa18eb9db01b02ec4ccac8869a7e726f372db54c313d4f5705637989ea1e20953a3ea60b5c0179ca95ddfe0516')
+        'a77016e49be3ec2a03200a73d773a62dcd0eb5605c037b8194965aafe2c41d2276204368aa266407ba774dc54bde701ed4f8248eeac235fde26edea1af77dfaa0caac259b8e16ad01bee9514d79e234966714177f490b3d6e848686feea8840e')
     assert isinstance(
         deezer.download('https://www.deezer.com/track/2104162', 'MP3_320'), Path)
     assert isinstance(
