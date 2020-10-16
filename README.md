@@ -9,7 +9,7 @@
 
 Deethon is a lightweight Python library for downloading high quality music from Deezer.
 
-## Gettings started
+## Getting started
 
 ### Installation
 
