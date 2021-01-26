@@ -259,7 +259,7 @@ class Track:
         try: 
             self.release_date = datetime.strptime(r["release_date"], "%Y-%m-%d") 
         except ValueError: 
-            self.release_date = "-"
+            self.release_date = datetime.strptime(2012-11-26, "%Y-%m-%d")
         self.title = r["title"]
         self.title_short = r["title_short"]
 
