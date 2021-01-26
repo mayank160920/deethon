@@ -256,7 +256,10 @@ class Track:
         self.preview_link = r["preview"]
         self.rank = r["rank"]
         self.replaygain_track_gain = f"{((r['gain'] + 18.4) * -1):.2f} dB"
-        self.release_date = datetime.strptime(r["release_date"], "%Y-%m-%d")
+        try: 
+            self.release_date = datetime.strptime(r["release_date"], "%Y-%m-%d") 
+        except ValueError: 
+            self.release_date = "-"
         self.title = r["title"]
         self.title_short = r["title_short"]
 
