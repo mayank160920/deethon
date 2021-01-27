@@ -5,9 +5,11 @@ from pathlib import Path
 from typing import Union, Generator, Any, Tuple, Optional, Callable
 
 import requests
+import logging
+
 
 from . import errors, consts, utils, types
-
+logger = logging.getLogger(__name__)
 
 class Session:
     """A session is required to connect to Deezer's unofficial API."""
@@ -47,11 +49,14 @@ class Session:
             "input": "3",
             "method": method,
         }
-        return self._req.post(
-            consts.API_URL,
-            params=params,
-            json=json
-        ).json()["results"]
+        try:
+            res = self._req.post(consts.API_URL,params=params,json=json)
+            assert res.status_code == 200, f"Response Code {res.status_code}\nDetails: {res.text}"
+            return res.json()["results"]
+        except AssertionError as e:
+            logger.exception(e)
+            self._refresh_session()
+            raise Exception("Invalid Response From Server !")
 
     def download(self,
                  url: str,
