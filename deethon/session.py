@@ -109,7 +109,11 @@ class Session:
         Raises:
             DownloadError: The track is not downloadable.
         """
-        track.add_more_tags(self)
+        try:
+            track.add_more_tags(self)
+        except KeyError:
+            self._refresh_session()
+            track.add_more_tags(self)
         quality = utils.get_quality(bitrate)
         download_url = utils.get_stream_url(track, quality)
         crypt = self._req.get(download_url, stream=True)
