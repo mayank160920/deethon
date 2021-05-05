@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional, List, Dict, Any, ClassVar
-
+from json.decoder import JSONDecodeError
 import requests
 
 from . import consts, errors
@@ -85,12 +85,21 @@ class Album:
             DeezerApiError: The Deezer API request replied with an error.
 
         """
-        r = requests.get(f"https://api.deezer.com/album/{album_id}").json()
+        while True:
+            _error_count = 0
+            try:
+                r = requests.get(f"https://api.deezer.com/album/{album_id}").json()
+                _error_count = 0
+                break
+            except JSONDecodeError:
+                _error_count += 1            
+                if _error_count >= 2:
+                    raise Exception("Invalid Response From Deezer Api !")
+
         if "error" in r:
             raise errors.DeezerApiError(r["error"]["type"],
                                         r["error"]["message"],
                                         r["error"]["code"])
-
         self.artist = r["artist"]["name"]
         self.basic_tracks_data = r["tracks"]["data"]
         self.cover_small_link = r["cover_small"]
@@ -237,7 +246,17 @@ class Track:
             DeezerApiError: The Deezer API request replied with an error.
 
         """
-        r = requests.get(f"https://api.deezer.com/track/{track_id}").json()
+        while True:
+            _error_count = 0
+            try:
+                r = requests.get(f"https://api.deezer.com/track/{track_id}").json()
+                _error_count = 0
+                break
+            except JSONDecodeError:
+                _error_count += 1            
+                if _error_count >= 2:
+                    raise Exception("Invalid Response From Deezer Api !")
+                      
         if "error" in r:
             raise errors.DeezerApiError(r["error"]["type"],
                                         r["error"]["message"],
